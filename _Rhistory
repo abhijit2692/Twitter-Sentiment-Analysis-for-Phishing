@@ -1,0 +1,512 @@
+plot(gdpgrowth~oecd, data = gdjData)
+```
+</div>
+## Linear Model
+```{r}
+g <- lm(gdpgrowth ~. , data = gdjData)
+summary(g)
+plot1 <- qplot(fitted.values(g),gdpgrowth,data=gdjData) +
+geom_abline(intercept=0, slope=1)
+plot2 <- qplot(fitted(g), residuals(g), xlab="Fitted", ylab="Residuals") +
+geom_abline(intercept=0, slope=0)
+grid.arrange(plot1, plot2, ncol=2)
+plot3 <- qplot(fitted(g), abs(residuals(g)), xlab="Fitted", ylab="|Residuals|") +
+geom_abline(intercept=0, slope=0)
+vif(g)
+qqnorm(residuals(g), ylab="Residuals")
+qqline(residuals(g))
+influencePlot(g, id.method=cooks.distance(g), id.n=4)
+influencePlot(g, id.method=cooks.distance(g), id.n=4)
+ob_num <- row.names(gdjData)
+halfnorm(lm.influence(g)$hat, labs=ob_num, ylab="leverages")
+influencePlot(g, id.method=cooks.distance(g), id.n=4)
+cook <- cooks.distance(g)
+halfnorm(cook,3,labs=ob_num,ylab="Cook's distance")
+plot4 <- qplot(fitted.values(g_56),gdpgrowth,data=gdjData[which(cook < max(cook)),]) +
+plot5 <- qplot(fitted(g_56), residuals(g_56), xlab="Fitted", ylab="Residuals") +
+geom_abline(intercept=0, slope=0)
+grid.arrange(plot4, plot5, ncol=2)
+plot6 <- qplot(fitted(g_56), abs(residuals(g_56)), xlab="Fitted", ylab="|Residuals|") +
+geom_abline(intercept=0, slope=0)
+stripchart(data.frame(scale(gdjData[c(4:5, 7:10, 6), c(4:5, 7:10, 6)])),
+vertical = TRUE,
+method = "jitter")
+g_log <- lm(formula = gdpgrowth ~ oil + inter + oecd + log(gdp60) + gdp85 + log(popgrowth) +log(invest) + log(school) + literacy60, data = gdjData)
+summary(g_log)
+hist(out$positive)
+require('devtools')
+require('sentR')
+# Create small vectors for happy and sad words (useful in aggregate(...) function)
+positive = scan('positive-words.txt', what='character',comment.char=';')
+negative = scan('negative-words.txt', what='character',comment.char=';')
+# Words to test sentiment
+test <- dataset<-read.csv("LiveTweets.csv")
+require('devtools')
+require('sentR')
+# Create small vectors for happy and sad words (useful in aggregate(...) function)
+positive = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/positive-words.txt', what='character',comment.char=';')
+negative = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/negative-words.txt', what='character',comment.char=';')
+# Words to test sentiment
+test <- dataset<-read.csv("C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv")
+# 1. Simple Summation
+out <- classify.aggregate(test, positive, negative)
+out
+# 2. Naive Bayes
+out <- classify.naivebayes(test)
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+hist(out$positive)
+hist(out["positive"])
+out <- gsub(",", "", out)   # remove comma
+out <- as.numeric(out)
+hist(out)
+library(RCurl)
+library(ROAuth)
+library(twitteR)
+library(plyr)
+library(stringr)
+library(e1071)
+library(RTextTools)
+# Set SSL certs globally
+options(RCurlOptions = list(cainfo = system.file("CurlSSL","cacert.pem", package = "RCurl")))
+reqURL <- "https://api.twitter.com/oauth/request_token"
+accessURL <- "https://api.twitter.com/oauth/access_token"
+authURL <- "https://api.twitter.com/oauth/authorize"
+consumerKey <- "RqAlnkN4RJ4MXL5QkZyZDh9Ei" #if you dont have this values, you can get them in twitter developer page  create an API (it doesnt cost anything and you get the values pretty easy)
+consumerSecret <- "PPyFryIIxJmTUiCA5cOGXtgjybsKaKOUy9dTyQ3NC81GiOZXwh"
+access_token_secret = "bLYhwipgiYVgLGf9Od6fuQutEtbOvck7uZqNzTDnEXhgZ" #your access_token_secret
+access_token="230984983-UbqOODD3pf8GxJNXlAMZynLtBbjIz4ypw8kIaOar"
+twitCred <- OAuthFactory$new(consumerKey=consumerKey,
+consumerSecret=consumerSecret,
+requestURL=reqURL,
+accessURL=accessURL,
+authURL=authURL)
+twitCred$handshake() # the program will ask you for a PIN this is obtained by Authorising the App in your browser.
+setup_twitter_oauth(consumerKey,consumerSecret,access_token,access_token_secret)
+library(RCurl)
+library(ROAuth)
+library(twitteR)
+library(plyr)
+library(stringr)
+library(e1071)
+library(RTextTools)
+# Set SSL certs globally
+options(RCurlOptions = list(cainfo = system.file("CurlSSL","cacert.pem", package = "RCurl")))
+reqURL <- "https://api.twitter.com/oauth/request_token"
+accessURL <- "https://api.twitter.com/oauth/access_token"
+authURL <- "https://api.twitter.com/oauth/authorize"
+consumerKey <- "UVvPpl5xTgCJqwjXbWE4XtSiw" #if you dont have this values, you can get them in twitter developer page  create an API (it doesnt cost anything and you get the values pretty easy)
+consumerSecret <- "Lo02BsLyaYzEcr3E0fgRgi8Q8dJ5NHdRpLnu0BauEV6QVeV0wW"
+access_token_secret = "Qs5qrXfJno10lhZDZkCBQyPQcPAcw6NbAobQcPmeK8VMW" #your access_token_secret
+access_token="1239513152-g8KTOjNgxj3xDvD9xjf0aZzyb0Jp95lv4FLVjbv"
+twitCred <- OAuthFactory$new(consumerKey=consumerKey,
+consumerSecret=consumerSecret,
+requestURL=reqURL,
+accessURL=accessURL,
+authURL=authURL)
+twitCred$handshake() # the program will ask you for a PIN this is obtained by Authorising the App in your browser.
+setup_twitter_oauth(consumerKey,consumerSecret,access_token,access_token_secret)
+tweets=searchTwitter("#raees", n=1000,lang = 'en') #keyword to fetch tweets related to
+length(tweets) #it tells you how many tweets do you download
+df <- do.call("rbind", lapply(tweets, as.data.frame))
+write.csv(df,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv")
+require('devtools')
+require('sentR')
+# Create small vectors for happy and sad words (useful in aggregate(...) function)
+positive = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/positive-words.txt', what='character',comment.char=';')
+negative = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/negative-words.txt', what='character',comment.char=';')
+# Words to test sentiment
+test <- dataset<-read.csv("C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv")
+# 1. Simple Summation
+out <- classify.aggregate(test, positive, negative)
+out
+# 2. Naive Bayes
+out <- classify.naivebayes(test)
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+out <- gsub(",", "", out)   # remove comma
+out <- as.numeric(out)
+hist(out)
+hist(out$positive)
+hist(out)
+require('devtools')
+require('sentR')
+# Create small vectors for happy and sad words (useful in aggregate(...) function)
+positive = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/positive-words.txt', what='character',comment.char=';')
+negative = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/negative-words.txt', what='character',comment.char=';')
+# Words to test sentiment
+test <- dataset<-read.csv("C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv")
+# 1. Simple Summation
+out <- classify.aggregate(test, positive, negative)
+out
+out <- classify.naivebayes(test)
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+out <- gsub(",", "", out)   # remove comma
+out <- as.numeric(out)
+hist(out,xlab = "Score of Sentiment Analysis",main = "Frequency",col = 5)
+require('devtools')
+require('sentR')
+# Create small vectors for happy and sad words (useful in aggregate(...) function)
+positive = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/positive-words.txt', what='character',comment.char=';')
+negative = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/negative-words.txt', what='character',comment.char=';')
+# Words to test sentiment
+test <- dataset<-read.csv("C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv")
+# 1. Simple Summation
+out <- classify.aggregate(test, positive, negative)
+out
+# 2. Naive Bayes
+out <- classify.naivebayes(test)
+out
+out <- classify.aggregate(test, positive, negative)
+out
+# 2. Naive Bayes
+out <- classify.naivebayes(out)
+out
+out <- classify.aggregate(positive, negative)
+out
+out <- classify.aggregate(positive, negative)
+out
+# 2. Naive Bayes
+out <- classify.naivebayes(out)
+out <- classify.naivebayes(test)
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+hist(out$SENT,xlab = "Score of Sentiment Analysis",main = "Frequency",col = 5)
+out <- gsub(",", "", out)   # remove comma
+out <- as.numeric(out)
+hist(out$SENT,xlab = "Score of Sentiment Analysis",main = "Frequency",col = 5)
+hist(out,xlab = "Score of Sentiment Analysis",main = "Frequency",col = 5)
+out <- gsub(",", "", out) # remove comma
+out
+out <- as.numeric(out)
+out
+out <- classify.naivebayes(test)
+out
+out <- classify.naivebayes(test)
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = " ")[ ,4]
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = " ")[ ,c('SENT')]
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,4]
+hist(out,xlab = "Score of Sentiment Analysis",main = "Frequency",col = 5)
+out
+Business
+out <- classify.naivebayes(test)
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,4]
+out
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,5]
+out
+hist(out,xlab = "Score of Sentiment Analysis",main = "Frequency",col = 5)
+hist(out$positive,xlab = "Score of Sentiment Analysis",main = "Frequency",col = 5)
+hist(out['positive'],xlab = "Score of Sentiment Analysis",main = "Frequency",col = 5)
+out <- gsub(",", "",out)   # remove comma
+out <- as.numeric(out)
+out
+out <- gsub(",", "",out)   # remove comma
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,5]
+out <- classify.naivebayes(test)
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,5]
+out
+out <- gsub(",", "",out)   # remove comma
+out
+hist(out['positive'],xlab = "Score of Sentiment Analysis",main = "Frequency",col = 5)
+hist(out$positive)
+hist(out['positive'],xlab = "Score of Sentiment Analysis",main = "Frequency",col = 5)
+hist(out)
+counts <- table(out)
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+names.arg=c("Positive", "Negative", "Neutral"))
+names.arg=c("Positive", "Negative", "Neutral"),col=c("darkblue","red","green"))
+counts <- table(out)
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+names.arg=c("Positive", "Negative", "Neutral"),col=c("darkblue","red","green"))
+accessURL <- "https://api.twitter.com/oauth/access_token"
+authURL <- "https://api.twitter.com/oauth/authorize"
+consumerKey <- "UVvPpl5xTgCJqwjXbWE4XtSiw" #if you dont have this values, you can get them in twitter developer page  create an API (it doesnt cost anything and you get the values pretty easy)
+consumerSecret <- "Lo02BsLyaYzEcr3E0fgRgi8Q8dJ5NHdRpLnu0BauEV6QVeV0wW"
+access_token_secret = "Qs5qrXfJno10lhZDZkCBQyPQcPAcw6NbAobQcPmeK8VMW" #your access_token_secret
+access_token="1239513152-g8KTOjNgxj3xDvD9xjf0aZzyb0Jp95lv4FLVjbv"
+twitCred <- OAuthFactory$new(consumerKey=consumerKey,
+consumerSecret=consumerSecret,
+requestURL=reqURL,
+accessURL=accessURL,
+authURL=authURL)
+twitCred$handshake() # the program will ask you for a PIN this is obtained by Authorising the App in your browser.
+setup_twitter_oauth(consumerKey,consumerSecret,access_token,access_token_secret)
+tweets=searchTwitter("#raees", n=20,lang = 'en') #keyword to fetch tweets related to
+length(tweets) #it tells you how many tweets do you download
+df <- do.call("rbind", lapply(tweets, as.data.frame))
+write.csv(df,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv")
+require('devtools')
+require('sentR')
+# Create small vectors for happy and sad words (useful in aggregate(...) function)
+positive = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/positive-words.txt', what='character',comment.char=';')
+negative = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/negative-words.txt', what='character',comment.char=';')
+# Words to test sentiment
+test <- dataset<-read.csv("C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv")
+# 1. Simple Summation
+out <- classify.aggregate(positive, negative)
+out
+# 2. Naive Bayes
+out <- classify.naivebayes(test)
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,5]
+out
+out <- gsub(",", "",out)   # remove comma
+out
+hist(out['positive'],xlab = "Score of Sentiment Analysis",main = "Frequency",col = 5)
+counts <- table(out)
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+names.arg=c("Positive", "Negative", "Neutral"),col=c("darkblue","red","green"))
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+names.arg=c("Negative", "Neutral", "Positive"),col=c("darkblue","red","green"))
+emotion=rbind(c('joy','sad','happy','disgust','surprised','amazing','good'))
+out <- classify.aggregate(test, emotion)
+out <- classify.aggregate(test, pos, neg)
+pos=rbind(c('joy','happy','surprised','amazing','good','wonderful'))
+neg=rbind(c('poor','bad','worst','cheap','better','not'))
+out <- classify.aggregate(test, pos, neg)
+out <- classify.naivebayes(test)
+out
+pos=rbind(c('joy','happy','surprised','amazing','good','wonderful'))
+neg=rbind(c('poor','bad','worst','cheap','better','not'))
+# Words to test sentiment
+test <- dataset<-read.csv("LiveTweets.csv")
+out <- classify.aggregate(test, pos, neg)
+out
+positive = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/positive-words.txt', what='character',comment.char=';')
+negative = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/negative-words.txt', what='character',comment.char=';')
+test <- dataset<-read.csv("C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv")
+out <- classify.aggregate(positive, negative)
+out
+out <- classify.naivebayes(test)
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,5]
+out
+out <- gsub(",", "",out)   # remove comma
+out
+counts <- table(out)
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+names.arg=c("Negative", "Neutral", "Positive"),col=c("darkblue","red","green"))
+out2 <- classify.aggregate(test, pos, neg)
+out
+out2 <- classify.naivebayes(test)
+out2
+write.csv(out2,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+out2 <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,5]
+out2
+out2 <- gsub(",", "",out)   # remove comma
+out2
+counts <- table(out2)
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+names.arg=c("Negative", "Neutral", "Positive"),col=c("darkblue","red","green"))
+library(RCurl)
+library(ROAuth)
+library(twitteR)
+library(plyr)
+library(stringr)
+library(e1071)
+library(RTextTools)
+# Set SSL certs globally
+options(RCurlOptions = list(cainfo = system.file("CurlSSL","cacert.pem", package = "RCurl")))
+reqURL <- "https://api.twitter.com/oauth/request_token"
+accessURL <- "https://api.twitter.com/oauth/access_token"
+authURL <- "https://api.twitter.com/oauth/authorize"
+consumerKey <- "UVvPpl5xTgCJqwjXbWE4XtSiw" #if you dont have this values, you can get them in twitter developer page  create an API (it doesnt cost anything and you get the values pretty easy)
+consumerSecret <- "Lo02BsLyaYzEcr3E0fgRgi8Q8dJ5NHdRpLnu0BauEV6QVeV0wW"
+access_token_secret = "Qs5qrXfJno10lhZDZkCBQyPQcPAcw6NbAobQcPmeK8VMW" #your access_token_secret
+access_token="1239513152-g8KTOjNgxj3xDvD9xjf0aZzyb0Jp95lv4FLVjbv"
+twitCred <- OAuthFactory$new(consumerKey=consumerKey,
+consumerSecret=consumerSecret,
+requestURL=reqURL,
+accessURL=accessURL,
+authURL=authURL)
+twitCred$handshake() # the program will ask you for a PIN this is obtained by Authorising the App in your browser.
+twitCred$handshake() # the program will ask you for a PIN this is obtained by Authorising the App in your browser.
+setup_twitter_oauth(consumerKey,consumerSecret,access_token,access_token_secret)
+tweets=searchTwitter("#raees", n=1000,lang = 'en') #keyword to fetch tweets related to
+length(tweets) #it tells you how many tweets do you download
+df <- do.call("rbind", lapply(tweets, as.data.frame))
+write.csv(df,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv")
+require('devtools')
+require('sentR')
+# Create small vectors for happy and sad words (useful in aggregate(...) function)
+positive = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/positive-words.txt', what='character',comment.char=';')
+negative = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/negative-words.txt', what='character',comment.char=';')
+test <- dataset<-read.csv("C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv")
+# 1. Simple Summation
+out <- classify.aggregate(positive, negative)
+out
+out <- classify.naivebayes(test)
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,5]
+out <- classify.aggregate(test,positive, negative)
+out
+out <- classify.naivebayes(test)
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,5]
+out
+out <- gsub(",", "",out)   # remove comma
+out
+counts <- table(out)
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+names.arg=c("Negative", "Neutral", "Positive"),col=c("darkblue","red","green"))
+pos=rbind(c('joy','happy','surprised','amazing','good','wonderful'))
+neg=rbind(c('poor','bad','worst','cheap','better','not'))
+# Words to test sentiment
+out2 <- classify.aggregate(test, pos, neg)
+out
+out2
+# 2. Naive Bayes
+out2 <- classify.naivebayes(test)
+out2
+write.csv(out2,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+out2 <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,5]
+out2
+out2 <- gsub(",", "",out)   # remove comma
+out2
+counts <- table(out2)
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+names.arg=c("Negative", "Neutral", "Positive"),col=c("darkblue","red","green"))
+shiny::runApp('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer')
+shiny::runApp()
+shiny::runApp()
+library(RCurl)
+library(ROAuth)
+library(twitteR)
+library(plyr)
+library(stringr)
+library(e1071)
+library(RTextTools)
+# Set SSL certs globally
+options(RCurlOptions = list(cainfo = system.file("CurlSSL","cacert.pem", package = "RCurl")))
+reqURL <- "https://api.twitter.com/oauth/request_token"
+accessURL <- "https://api.twitter.com/oauth/access_token"
+authURL <- "https://api.twitter.com/oauth/authorize"
+consumerKey <- "UVvPpl5xTgCJqwjXbWE4XtSiw" #if you dont have this values, you can get them in twitter developer page  create an API (it doesnt cost anything and you get the values pretty easy)
+consumerSecret <- "Lo02BsLyaYzEcr3E0fgRgi8Q8dJ5NHdRpLnu0BauEV6QVeV0wW"
+access_token_secret = "Qs5qrXfJno10lhZDZkCBQyPQcPAcw6NbAobQcPmeK8VMW" #your access_token_secret
+access_token="1239513152-g8KTOjNgxj3xDvD9xjf0aZzyb0Jp95lv4FLVjbv"
+twitCred <- OAuthFactory$new(consumerKey=consumerKey,
+consumerSecret=consumerSecret,
+requestURL=reqURL,
+accessURL=accessURL,
+authURL=authURL)
+twitCred$handshake() # the program will ask you for a PIN this is obtained by Authorising the App in your browser.
+setup_twitter_oauth(consumerKey,consumerSecret,access_token,access_token_secret)
+tweets=searchTwitter("#amazongo", n=1000,lang = 'en') #keyword to fetch tweets related to
+length(tweets) #it tells you how many tweets do you download
+df <- do.call("rbind", lapply(tweets, as.data.frame))
+write.csv(df,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv")
+require('devtools')
+require('sentR')
+# Create small vectors for happy and sad words (useful in aggregate(...) function)
+positive = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/positive-words.txt', what='character',comment.char=';')
+negative = scan('C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/negative-words.txt', what='character',comment.char=';')
+# Words to test sentiment
+test <- read.csv("C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv")
+# 1. Simple Summation
+out <- classify.aggregate(test,positive, negative)
+out
+# 2. Naive Bayes
+out <- classify.naivebayes(test)
+out
+write.csv(out,"C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+conmat <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv")
+conmat
+#Plotting the Cofusion Matrix:
+plotconfmat = rpart(conmat$SENT ~ ., data=conmat, method="class")
+plotconfmat
+plotconfmat = rpart(conmat$SENT ~ ., data=conmat, method="class")
+library(RCurl)
+library(ROAuth)
+library(twitteR)
+library(plyr)
+library(stringr)
+library(e1071)
+library(RTextTools)
+plotconfmat = rpart(conmat$SENT ~ ., data=conmat, method="class")
+library(rpart)
+plotconfmat = rpart(conmat$SENT ~ ., data=conmat, method="class")
+plotconfmat
+predicttweet = predict(plotconfmat, newdata=conmat, type="class")
+predicttweet
+#Now we will be computing the confusion matrix from the predictions
+cmat_tweet<-table(conmat$SENT, predicttweet)
+cmat_tweet
+#Compute accuracy
+accu_tweet <- (cmat_tweet[1,1] + cmat_tweet[2,2] + cmat_tweet[3,3])/sum(cmat_tweet)
+accu_tweet
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,5]
+out
+out <- gsub(",", "",out)   # remove comma
+out
+counts <- table(out)
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+names.arg=c("Negative", "Neutral", "Positive"),col=c("darkblue","red","green"))
+plotconfmat = rpart(conmat$SENT ~ ., data=conmat, method="class")
+plotconfmat
+predicttweet = predict(plotconfmat, newdata=conmat, type="class")
+predicttweet
+#Now we will be computing the confusion matrix from the predictions
+cmat_tweet<-table(conmat$SENT, predicttweet)
+cmat_tweet
+#Compute accuracy
+accu_tweet <- (cmat_tweet[1,1] + cmat_tweet[2,2] + cmat_tweet[3,3])/sum(cmat_tweet)
+accu_tweet
+out <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,5]
+out
+out <- gsub(",", "",out)   # remove comma
+out
+counts <- table(out)
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+names.arg=c("Negative", "Neutral", "Positive"),col=c("darkblue","red","green"))
+library(tm)
+library(SnowballC)
+library(wordcloud)
+jeopQ <- read.csv("C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv", stringsAsFactors = FALSE)
+jeopCorpus <- Corpus(VectorSource(jeopQ$text))
+jeopCorpus <- tm_map(jeopCorpus, PlainTextDocument)
+jeopCorpus <- tm_map(jeopCorpus, removePunctuation)
+jeopCorpus <- tm_map(jeopCorpus, removeWords, stopwords('english'))
+jeopCorpus <- tm_map(jeopCorpus, stemDocument)
+wordcloud(jeopCorpus,min.freq = 1,colors=brewer.pal(8,"Dark2"))
+timetweet <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,6]
+timetweet
+location <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweetsNaive.csv", sep = ",")[ ,18]
+timetweet <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv", sep = ",")[ ,6]
+timetweet
+location <- read.csv(file = "C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv", sep = ",")[ ,18]
+location
+timetweet <- gsub(",", "",timetweet)   # remove comma
+timetweet
+counts <- table(timetweet)
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+names.arg=c("Negative", "Neutral", "Positive"),col=c("darkblue","red","green"))
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+)
+location <- gsub(",", "",location)   # remove comma
+location
+counts <- table(location)
+barplot(counts, main="Sentimental Analysis", horiz=TRUE,
+)
+plot(location, main="Scatterplot Example",
+xlab="Car Weight ", ylab="Miles Per Gallon ", pch=19)
+na.omit(location)
+location
+na.omit(location)
+counts <- table(location)
+plot(location, main="Scatterplot Example",
+xlab="Car Weight ", ylab="Miles Per Gallon ", pch=19)

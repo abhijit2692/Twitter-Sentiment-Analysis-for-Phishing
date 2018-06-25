@@ -1,0 +1,11 @@
+library(tm)
+library(SnowballC)
+library(wordcloud)
+
+jeopQ <- read.csv("C:/ABHIJIT/Studies/MIT/SEM 1/Analytics Business Intelligence/Project/Project/ProjectServer/LiveTweets.csv", stringsAsFactors = FALSE)
+jeopCorpus <- Corpus(VectorSource(jeopQ$text))
+jeopCorpus <- tm_map(jeopCorpus, PlainTextDocument)
+jeopCorpus <- tm_map(jeopCorpus, removePunctuation)
+jeopCorpus <- tm_map(jeopCorpus, removeWords, stopwords('english'))
+jeopCorpus <- tm_map(jeopCorpus, stemDocument)
+wordcloud(jeopCorpus,min.freq = 1,colors=brewer.pal(8,"Dark2"))
